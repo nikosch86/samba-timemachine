@@ -34,6 +34,7 @@ Environment Variables:
 | WORKGROUP | Workgroup for Samba Server | WORKGROUP |
 | SHARENAME | Name of additional share | Share |
 | MIMIC_MODEL | Model Name to announce | TimeCapsule8,119 |
+| DISABLE_SAMBA_ENCRYPTION | set to yes to disable encryption in transit (improves performance 2x) | no |
 
 ## docker-compose
 

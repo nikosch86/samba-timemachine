@@ -14,5 +14,6 @@ COPY entrypoint.sh /
 RUN chmod +x /entrypoint.sh
 COPY supervisord.conf /etc/supervisord.conf
 
+VOLUME ["/var/lib/samba", "/var/cache/samba", "/run/samba"]
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["supervisord", "-e", "debug", "--configuration", "/etc/supervisord.conf"]

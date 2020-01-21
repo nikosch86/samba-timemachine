@@ -11,6 +11,8 @@ TM_SIZE_LIMIT="${TM_SIZE_LIMIT:-0}"
 WORKGROUP="${WORKGROUP:-WORKGROUP}"
 SHARENAME="${SHARENAME:-Share}"
 MIMIC_MODEL="${MIMIC_MODEL:-TimeCapsule8,119}"
+DISABLE_SAMBA_ENCRYPTION="${DISABLE_SAMBA_ENCRYPTION:-no}"
+SMB_ENCRYPT="mandatory"
 
 echo "creating avahi smbd config to mimic model ${MIMIC_MODEL}"
 echo "<?xml version=\"1.0\" standalone='no'?><!--*-nxml-*-->
@@ -34,6 +36,10 @@ echo "<?xml version=\"1.0\" standalone='no'?><!--*-nxml-*-->
 </service-group>" > /etc/avahi/services/smbd.service
 
 echo "creating smb config for ${WORKGROUP} and share ${TM_SHARENAME}"
+if [ "${DISABLE_SAMBA_ENCRYPTION}" == "yes" ]; then
+  echo -en "!!!! ATTENTION !!!!\n\n\tit has been requested to disable smb encryption, \n\tsamba traffic will traverse the network in plaintext!!\n\tsee the DISABLE_SAMBA_ENCRYPTION env variable\n\n!!!! ATTENTION !!!!\n\n"
+  SMB_ENCRYPT="off"
+fi
 echo "[global]
  server role = standalone server
  workgroup = ${WORKGROUP}
@@ -51,7 +57,7 @@ echo "[global]
  map to guest = bad user
  dns proxy = no
  client min protocol = SMB2
- smb encrypt = mandatory
+ smb encrypt = ${SMB_ENCRYPT}
 
  wide links = yes
  unix extensions = no
@@ -110,5 +116,7 @@ mkdir -p "/data/${TM_SHARENAME}" "/data/${SHARENAME}"
 chown -R "${TM_USERNAME}":"${TM_GROUPNAME}" "/data/${TM_SHARENAME}" "/data/${SHARENAME}"
 
 rm -f /run/samba/nmbd.pid /run/samba/smbd.pid /run/dbus.pid /run/avahi-daemon/pid
+# fix volume ownership
+chown -R root:root /var/lib/samba /var/cache/samba /run/samba
 
 exec "${@}"
