@@ -11,12 +11,17 @@ services:
         hard: 65536
     volumes:
       - ./data:/data
-    # environment:
-    #   TM_USERNAME: "${TM_USERNAME:-timemachine}"
-    #   TM_UID: "${TM_UID:-1000}"
-    #   TM_GID: "${TM_GID:-${TM_UID}}"
-    #   TM_PASSWORD: "${TM_PASSWORD:-timemachine}"
-    #   TM_GROUPNAME: "${TM_GROUPNAME:-timemachine}"
-    #   TM_SHARENAME: "${TM_SHARENAME:-TimeMachine}"
-    #   TM_SIZE_LIMIT: "${TM_SIZE_LIMIT:-0}"
-    #   MIMIC_MODEL: "${MIMIC_MODEL:-TimeCapsule8,119}"
+    environment:
+      DOMAIN_NAME: "enteryourdomainhere.home"
+      #   TM_USERNAME: "${TM_USERNAME:-timemachine}"
+      #   TM_UID: "${TM_UID:-1000}"
+      #   TM_GID: "${TM_GID:-${TM_UID}}"
+      #   TM_PASSWORD: "${TM_PASSWORD:-timemachine}"
+      #   TM_GROUPNAME: "${TM_GROUPNAME:-timemachine}"
+      #   TM_SHARENAME: "${TM_SHARENAME:-TimeMachine}"
+      #   TM_SIZE_LIMIT: "${TM_SIZE_LIMIT:-0}"
+      #   MIMIC_MODEL: "${MIMIC_MODEL:-TimeCapsule8,119}"
+      #   WORKGROUP="${WORKGROUP:-WORKGROUP}"
+      #   SHARENAME="${SHARENAME:-Share}"
+      #   MIMIC_MODEL="${MIMIC_MODEL:-MacPro7,1@ECOLOR=226,226,224}"
+      #   DISABLE_SAMBA_ENCRYPTION="${DISABLE_SAMBA_ENCRYPTION:-no}"

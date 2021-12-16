@@ -10,7 +10,7 @@ TM_SIZE_LIMIT="${TM_SIZE_LIMIT:-0}"
 
 WORKGROUP="${WORKGROUP:-WORKGROUP}"
 SHARENAME="${SHARENAME:-Share}"
-MIMIC_MODEL="${MIMIC_MODEL:-TimeCapsule8,119}"
+MIMIC_MODEL="${MIMIC_MODEL:-MacPro7,1@ECOLOR=226,226,224}"
 DISABLE_SAMBA_ENCRYPTION="${DISABLE_SAMBA_ENCRYPTION:-no}"
 SMB_ENCRYPT="mandatory"
 
@@ -22,6 +22,7 @@ echo "<?xml version=\"1.0\" standalone='no'?><!--*-nxml-*-->
   <service>
     <type>_smb._tcp</type>
     <port>445</port>
+    <host-name>server.internal.domain</host-name>
   </service>
   <service>
     <type>_device-info._tcp</type>
@@ -32,8 +33,11 @@ echo "<?xml version=\"1.0\" standalone='no'?><!--*-nxml-*-->
    <type>_adisk._tcp</type>
    <txt-record>sys=waMa=0,adVF=0x100</txt-record>
    <txt-record>dk0=adVN=TimeMachine,adVF=0x82</txt-record>
+   <host-name>server.internal.domain</host-name>
  </service>
 </service-group>" > /etc/avahi/services/smbd.service
+
+sed -i "s/^#host-name=.*/host-name=$HOSTNAME/g;s/^#domain-name=.*/domain-name=$DOMAIN_NAME/g;s/^#enable-dbus=yes/enable-dbus=no/g" /etc/avahi/avahi-daemon.conf
 
 echo "creating smb config for ${WORKGROUP} and share ${TM_SHARENAME}"
 if [ "${DISABLE_SAMBA_ENCRYPTION}" == "yes" ]; then
@@ -67,12 +71,21 @@ echo "[global]
  kernel share modes = no
  posix locking = no
  acl allow execute always = yes
+ inherit permissions = yes
 
  log file = /var/log/samba/log.%m
  logging = file
  max log size = 1000
  load printers = no
  fruit:advertise_fullsync = true
+ fruit:nfs_aces = no
+ fruit:model = MacSamba
+ fruit:posix_rename = yes
+ fruit:veto_appledouble = no
+ fruit:wipe_intentionally_left_blank_rfork = yes
+ fruit:delete_empty_adfiles = yes
+ fruit:metadata = stream
+ vfs objects = acl_xattr catia fruit streams_xattr
 [${TM_SHARENAME}]
  fruit:aapl = yes
  fruit:time machine = yes
@@ -82,14 +95,12 @@ echo "[global]
  browseable = yes
  writable = yes
  ea support = yes
- vfs objects = catia fruit streams_xattr
  [${SHARENAME}]
   path = /data/${SHARENAME}
   valid users = ${TM_USERNAME}
   browseable = yes
   writable = yes
-  ea support = yes
-  vfs objects = catia fruit streams_xattr" > /etc/samba/smb.conf
+  ea support = yes" > /etc/samba/smb.conf
 
  # check to see if group exists; if not, create it
  if grep -q -E "^${TM_GROUPNAME}:" /etc/group > /dev/null 2>&1
