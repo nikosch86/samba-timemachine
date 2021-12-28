@@ -11,6 +11,11 @@ services:
         hard: 65536
     volumes:
       - ./data:/data
+    logging:
+      driver: json-file
+      options:
+        max-size: 60m
+        max-file: '3'
     environment:
       DOMAIN_NAME: "enteryourdomainhere.home"
       #   TM_USERNAME: "${TM_USERNAME:-timemachine}"
