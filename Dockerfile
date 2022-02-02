@@ -1,6 +1,6 @@
 FROM alpine:latest
 
-RUN apk add --no-cache samba-common-tools samba-server samba-client \
+RUN apk add --no-cache samba-common-tools samba-server>=4.15.5-r0 samba-client \
   avahi avahi-compat-libdns_sd avahi-tools \
   dbus \
   supervisor
