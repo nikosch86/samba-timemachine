@@ -11,8 +11,9 @@ TM_SIZE_LIMIT="${TM_SIZE_LIMIT:-0}"
 WORKGROUP="${WORKGROUP:-WORKGROUP}"
 SHARENAME="${SHARENAME:-Share}"
 MIMIC_MODEL="${MIMIC_MODEL:-MacPro7,1@ECOLOR=226,226,224}"
-DOMAIN_NAME="${DOMAIN_NAME:-${DOMAIN_NAME}}"
+DOMAIN_NAME="${DOMAIN_NAME:-server.internal.domain}"
 DISABLE_SAMBA_ENCRYPTION="${DISABLE_SAMBA_ENCRYPTION:-no}"
+SMB_SIGNING="${SMB_SIGNING:-default}"
 SMB_ENCRYPT="mandatory"
 
 echo "creating avahi smbd config to mimic model ${MIMIC_MODEL}"
@@ -63,6 +64,7 @@ echo "[global]
  dns proxy = no
  client min protocol = SMB2
  smb encrypt = ${SMB_ENCRYPT}
+ server signing = ${SMB_SIGNING}
 
  wide links = yes
  unix extensions = no

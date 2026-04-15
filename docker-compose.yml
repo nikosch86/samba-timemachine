@@ -28,3 +28,4 @@ services:
       #   SHARENAME="${SHARENAME:-Share}"
       #   MIMIC_MODEL="${MIMIC_MODEL:-MacPro7,1@ECOLOR=226,226,224}"
       #   DISABLE_SAMBA_ENCRYPTION="${DISABLE_SAMBA_ENCRYPTION:-no}"
+      #   SMB_SIGNING="${SMB_SIGNING:-default}"
