@@ -11,6 +11,7 @@ TM_SIZE_LIMIT="${TM_SIZE_LIMIT:-0}"
 WORKGROUP="${WORKGROUP:-WORKGROUP}"
 SHARENAME="${SHARENAME:-Share}"
 MIMIC_MODEL="${MIMIC_MODEL:-MacPro7,1@ECOLOR=226,226,224}"
+DOMAIN_NAME="${DOMAIN_NAME:-${DOMAIN_NAME}}"
 DISABLE_SAMBA_ENCRYPTION="${DISABLE_SAMBA_ENCRYPTION:-no}"
 SMB_ENCRYPT="mandatory"
 
@@ -22,7 +23,7 @@ echo "<?xml version=\"1.0\" standalone='no'?><!--*-nxml-*-->
   <service>
     <type>_smb._tcp</type>
     <port>445</port>
-    <host-name>server.internal.domain</host-name>
+    <host-name>${DOMAIN_NAME}</host-name>
   </service>
   <service>
     <type>_device-info._tcp</type>
@@ -33,7 +34,7 @@ echo "<?xml version=\"1.0\" standalone='no'?><!--*-nxml-*-->
    <type>_adisk._tcp</type>
    <txt-record>sys=waMa=0,adVF=0x100</txt-record>
    <txt-record>dk0=adVN=TimeMachine,adVF=0x82</txt-record>
-   <host-name>server.internal.domain</host-name>
+   <host-name>${DOMAIN_NAME}</host-name>
  </service>
 </service-group>" > /etc/avahi/services/smbd.service
 
@@ -79,7 +80,7 @@ echo "[global]
  load printers = no
  fruit:advertise_fullsync = true
  fruit:nfs_aces = no
- fruit:model = MacSamba
+ fruit:model = ${MIMIC_MODEL}
  fruit:posix_rename = yes
  fruit:veto_appledouble = no
  fruit:wipe_intentionally_left_blank_rfork = yes
