@@ -120,7 +120,7 @@ echo "[global]
  else
    echo "INFO: User doesn't exist; creating..."
    # create the user
-   adduser -D -H -u "${TM_UID}" -G "${TM_GROUPNAME}" -s /bin/false -D "${TM_USERNAME}"
+   adduser -D -H -u "${TM_UID}" -G "${TM_GROUPNAME}" -s /bin/false "${TM_USERNAME}"
    echo -e "${TM_PASSWORD}\n${TM_PASSWORD}" | smbpasswd -s -a "${TM_USERNAME}"
  fi
 
